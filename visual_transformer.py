@@ -539,3 +539,12 @@ if process_button:
 # 页脚
 st.markdown("---")
 st.markdown("**Transformer Visual Demo - Based on BERT-base-multilingual-cased Model**")
+
+# 添加主函数入口，允许直接通过python执行
+if __name__ == "__main__":
+    import sys
+    import os
+    # 检查是否已经通过streamlit run运行
+    if "streamlit" not in sys.argv[0]:
+        # 如果直接通过python执行，调用streamlit run来启动应用
+        os.system(f"streamlit run {os.path.abspath(__file__)} --server.headless true")

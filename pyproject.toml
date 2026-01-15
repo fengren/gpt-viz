@@ -6,6 +6,17 @@ authors = [
 ]
 version = "0.1.0"
 requires-python = ">=3.12"
+dependencies = [
+    "streamlit>=1.53.0",
+    "transformers>=4.57.5",
+    "torch>=2.9.1",
+    "numpy>=2.4.1",
+    "scikit-learn>=1.8.0",
+    "matplotlib>=3.10.8",
+    "sentencepiece>=0.2.1",
+    "pandas>=2.3.3",
+    "pyyaml>=6.0.3"
+]
 
 [build-system]
 requires = ["setuptools>=61.0"]
