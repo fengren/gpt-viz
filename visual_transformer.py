@@ -1,5 +1,23 @@
 import streamlit as st
-from transformers import AutoTokenizer, AutoModelForCausalLM, AutoModel
+import sys
+import logging
+
+# 设置日志级别
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# 尝试导入transformers库
+logger.info(f"Python version: {sys.version}")
+try:
+    import transformers
+    logger.info(f"transformers version: {transformers.__version__}")
+    # 只导入实际使用的组件，移除未使用的AutoModelForCausalLM
+    from transformers import AutoTokenizer, AutoModel
+    logger.info("Successfully imported AutoTokenizer and AutoModel")
+except Exception as e:
+    logger.error(f"Error importing transformers: {e}")
+    raise
+
 import torch
 import numpy as np
 from sklearn.preprocessing import normalize
@@ -346,6 +364,60 @@ if process_button:
             st.info(t("classification_tip"))
             st.write(f"{t('bert_analysis')}")
             st.info(t("bert_info"))
+            
+            # 添加Transformer架构类型讲解
+            st.subheader("Transformer Architecture Types")
+            st.markdown("""
+            Transformer模型主要分为三种架构类型，每种架构有不同的应用场景：
+            
+            ### 1. Encoder-only Architecture
+            **代表模型**: BERT, RoBERTa, ALBERT, DistilBERT
+            **特点**:
+            - 仅包含Transformer编码器部分
+            - 双向注意力，能同时看到上下文信息
+            - 适合理解类任务
+            **应用场景**:
+            - 文本分类
+            - 命名实体识别
+            - 情感分析
+            - 文本相似度计算
+            - 信息检索
+            
+            ### 2. Decoder-only Architecture
+            **代表模型**: GPT系列, Llama, Mistral, Gemma
+            **特点**:
+            - 仅包含Transformer解码器部分
+            - 单向注意力，只能看到之前的信息
+            - 适合生成类任务
+            **应用场景**:
+            - 文本生成
+            - 对话系统
+            - 故事创作
+            - 代码生成
+            - 自动写作
+            
+            ### 3. Encoder-Decoder Architecture
+            **代表模型**: T5, BART, mT5, Pegasus
+            **特点**:
+            - 包含完整的编码器和解码器
+            - 编码器处理输入，解码器生成输出
+            - 适合序列到序列任务
+            **应用场景**:
+            - 机器翻译
+            - 文本摘要
+            - 问答系统
+            - 文本改写
+            - 语音识别
+            
+            ### Architecture Comparison
+            | Architecture | Key Features | Typical Tasks | Representative Models |
+            |--------------|--------------|---------------|------------------------|
+            | Encoder-only | Bidirectional attention | Understanding tasks | BERT, RoBERTa |
+            | Decoder-only | Unidirectional attention | Generation tasks | GPT, Llama |
+            | Encoder-Decoder | Both encoder and decoder | Sequence-to-sequence tasks | T5, BART |
+            
+            This demo uses BERT, an encoder-only model, which is why it excels at understanding and classification tasks but doesn't support text generation like GPT models.
+            """)
             
             st.write(f"{t('vector_applications')}")
             st.write(t("similarity_calc"))
